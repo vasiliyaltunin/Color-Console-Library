@@ -1,0 +1,11 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/projects/colorconsolelib/build/cmake_install.cmake",
+		"C:/projects/colorconsolelib/build/examples/cmake_install.cmake",
+		"C:/projects/colorconsolelib/build/examples/basic/cmake_install.cmake",
+		"C:/projects/colorconsolelib/build/examples/color_table/cmake_install.cmake",
+		"C:/projects/colorconsolelib/build/examples/Russia_flag/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
