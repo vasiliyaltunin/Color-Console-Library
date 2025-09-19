@@ -39,4 +39,6 @@ set(targets_file "${MY_CMAKE_PREFIX}-${LIB_LINK_TYPE}-targets.cmake")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Застявляем компилятор MSVC создавать .lib файл
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 message(" === Settings setup complete")

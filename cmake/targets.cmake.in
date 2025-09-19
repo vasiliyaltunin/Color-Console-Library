@@ -17,27 +17,43 @@ target_include_directories(${PROJECT_NAME}
 # Имя файла библиотеки. К нему автоматически будет добавлено lib
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${MY_LIB_OUTPUT_NAME}")
 
-
+# Пытаемся найти Doxygen
 find_package(Doxygen)
 
-if(Doxygen_FOUND)
+if(Doxygen_FOUND) # Если Doxygen найден
 
+    # Добавляем target для сборки документации в папке build/docs
+    # с использованием автоматически сгенерированным файлом 
+    # конфигурации build/docs/Doxyfile
     doxygen_add_docs(docs 
                     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs
                     ALL
                     CONFIG_FILE ${CMAKE_CURRENT_BINARY_DIR}/docs/Doxyfile
                     )
 
-    # Имя файла библиотеки. К нему автоматически будет добавлено lib
-    set_target_properties(docs PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    message(" === Documentation setup complete")
+endif() 
 
-  message(" === Documentation setup complete")
-endif()
-
+# Включаем в проект папку examples
 add_subdirectory(examples EXCLUDE_FROM_ALL)
 
+# Добавляем target для примеров
 add_custom_target(examples
     DEPENDS basicexample color_table_example Russia_flag_example
 )
+
+# Заставляем компилятор MSVC использовать папку build для сохранения .exe .dll .lib файлов, чтобы обеспечить 
+# совместимость c GCC
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # Будет устанавливаться только если компилятор - MSVC
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "$<IF:$<CONFIG:Debug>,${CMAKE_CURRENT_BINARY_DIR},${CMAKE_CURRENT_BINARY_DIR}>"
+    )
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "$<IF:$<CONFIG:Debug>,${CMAKE_CURRENT_BINARY_DIR},${CMAKE_CURRENT_BINARY_DIR}>"
+    )
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        ARCHIVE_OUTPUT_DIRECTORY "$<IF:$<CONFIG:Debug>,${CMAKE_CURRENT_BINARY_DIR},${CMAKE_CURRENT_BINARY_DIR}>"
+    )
+endif()
 
 message(" === Targets settings complete")
